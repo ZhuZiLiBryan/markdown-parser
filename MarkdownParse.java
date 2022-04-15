@@ -44,7 +44,7 @@ public class MarkdownParse {
                 currentIndex = markdown.length();
             }
 
-            if (imageMarker == -1 || imageMarker > openBracket) {
+            if ((imageMarker == -1 || imageMarker > openBracket) && openBracket != -1) {
                 toReturn.add(markdown.substring(openParen + 1, closeParen));
             }
         }
