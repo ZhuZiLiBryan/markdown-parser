@@ -16,6 +16,34 @@ public class MarkdownParse {
             int closeBracket = markdown.indexOf("]", openBracket);
             int openParen = markdown.indexOf("(", closeBracket);
             int closeParen = markdown.indexOf(")", openParen);
+
+            //find the opening to next link
+            int nextOpenBracket = markdown.indexOf("[", closeParen);
+            //reached end of file
+            if (nextOpenBracket == -1) {
+                toReturn.add(markdown.substring(openParen + 1, closeParen));
+                currentIndex = closeParen + 1;
+
+                return toReturn;
+
+            }
+            String textBetween = markdown.substring(closeParen + 1, nextOpenBracket);
+        
+            //as long as there is a ")" to be found, keep shortening the string 
+            //and keeping track of where that last close parenthesis is
+            while (textBetween.indexOf(")") != -1) {
+                closeParen = closeParen + textBetween.indexOf(")");
+                System.out.println(closeParen);
+            
+                //last parentheses
+                if (closeParen + 1 >= textBetween.length()) {
+                    break;
+                }
+                textBetween = markdown.substring(closeParen + 1, nextOpenBracket);
+                
+            }
+
+            
             toReturn.add(markdown.substring(openParen + 1, closeParen));
             currentIndex = closeParen + 1;
         }
