@@ -9,9 +9,12 @@ public class MarkdownParse {
 
     public static ArrayList<String> getLinks(String markdown) {
         ArrayList<String> toReturn = new ArrayList<>();
+        
         // find the next [, then find the ], then find the (, then read link upto next )
         int currentIndex = 0;
         while(currentIndex < markdown.length()) {
+            int imageMarker = markdown.indexOf("!", currentIndex);
+
             int openBracket = markdown.indexOf("[", currentIndex);
             int closeBracket = markdown.indexOf("]", openBracket);
             int openParen = markdown.indexOf("(", closeBracket);
@@ -19,33 +22,31 @@ public class MarkdownParse {
 
             //find the opening to next link
             int nextOpenBracket = markdown.indexOf("[", closeParen);
-            //reached end of file
-            if (nextOpenBracket == -1) {
-                toReturn.add(markdown.substring(openParen + 1, closeParen));
-                currentIndex = closeParen + 1;
 
-                return toReturn;
-
-            }
-            String textBetween = markdown.substring(closeParen + 1, nextOpenBracket);
+            //not at end of file yet
+            if (nextOpenBracket != -1) {
+                String textBetween = markdown.substring(closeParen + 1, nextOpenBracket);
         
-            //as long as there is a ")" to be found, keep shortening the string 
-            //and keeping track of where that last close parenthesis is
-            while (textBetween.indexOf(")") != -1) {
-                closeParen = closeParen + textBetween.indexOf(")");
-                System.out.println(closeParen);
-            
-                //last parentheses
-                if (closeParen + 1 >= textBetween.length()) {
-                    break;
-                }
-                textBetween = markdown.substring(closeParen + 1, nextOpenBracket);
+                //as long as there is a ")" to be found, keep shortening the string 
+                //and keeping track of where that last close parenthesis is
+                while (textBetween.indexOf(")") != -1) {
+                    closeParen = closeParen + textBetween.indexOf(")");
                 
+                    //last parentheses
+                    if (closeParen + 1 >= textBetween.length()) {
+                        break;
+                    }
+                    textBetween = markdown.substring(closeParen + 1, nextOpenBracket);
+                }
+
+                currentIndex = closeParen + 1;
+            } else {
+                currentIndex = markdown.length();
             }
 
-            
-            toReturn.add(markdown.substring(openParen + 1, closeParen));
-            currentIndex = closeParen + 1;
+            if (imageMarker == -1 || imageMarker > openBracket) {
+                toReturn.add(markdown.substring(openParen + 1, closeParen));
+            }
         }
 
         return toReturn;
