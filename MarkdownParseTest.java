@@ -154,36 +154,36 @@ public class MarkdownParseTest {
         assertEquals(0, links.size());
     }
 
-    // @Test
-    // public void TestTen() {
-    //     String finalContents = null;
+    @Test
+    public void TestTen() {
+        String finalContents = null;
 
-    //     try {
-    //         finalContents = Files.readString(Path.of("test-file7.md"));
-    //     } catch(IOException e) {
-    //     }
+        try {
+            finalContents = Files.readString(Path.of("test-file7.md"));
+        } catch(IOException e) {
+        }
 
-    //     ArrayList<String> links = MarkdownParse.getLinks(finalContents);
+        ArrayList<String> links = MarkdownParse.getLinks(finalContents);
 
-    //     assertEquals(0, links.size());
-    // }
+        assertEquals(0, links.size());
+    }
 
-    // @Test
-    // public void TestEleven() {
-    //     String finalContents = null;
+    @Test
+    public void TestEleven() {
+        String finalContents = null;
 
-    //     try {
-    //         finalContents = Files.readString(Path.of("test-file8.md"));
-    //     } catch(IOException e) {
-    //     }
+        try {
+            finalContents = Files.readString(Path.of("test-file8.md"));
+        } catch(IOException e) {
+        }
 
-    //     ArrayList<String> links = MarkdownParse.getLinks(finalContents);
+        ArrayList<String> links = MarkdownParse.getLinks(finalContents);
 
-    //     List<String> expected = List.of("a link on the first line");
-    //     for (int i = 0; i < expected.size(); i++) {
-    //         assertEquals(expected.get(i), links.get(i));
-    //     }
-    // }
+        List<String> expected = List.of("a link on the first line");
+        for (int i = 0; i < expected.size(); i++) {
+            assertEquals(expected.get(i), links.get(i));
+        }
+    }
 
 
 
