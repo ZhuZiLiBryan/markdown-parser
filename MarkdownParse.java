@@ -9,6 +9,7 @@ public class MarkdownParse {
 
     public static ArrayList<String> getLinks(String markdown) {
         ArrayList<String> toReturn = new ArrayList<>();
+        boolean hadToShorten = false;
         
         // find the next [, then find the ], then find the (, then read link upto next )
         int currentIndex = 0;
@@ -20,6 +21,11 @@ public class MarkdownParse {
             int openParen = markdown.indexOf("(", closeBracket);
             int closeParen = markdown.indexOf(")", openParen);
 
+            System.out.println("openbrack " + openBracket);
+            System.out.println("closebrack " + closeBracket);
+            System.out.println("openparen " + openParen);
+            System.out.println("closeparen " + closeParen);
+
             //find the opening to next link
             int nextOpenBracket = markdown.indexOf("[", closeParen);
 
@@ -30,6 +36,7 @@ public class MarkdownParse {
                 //as long as there is a ")" to be found, keep shortening the string 
                 //and keeping track of where that last close parenthesis is
                 while (textBetween.indexOf(")") != -1) {
+                    hadToShorten = true;
                     closeParen = closeParen + textBetween.indexOf(")");
                 
                     //last parentheses
@@ -39,12 +46,19 @@ public class MarkdownParse {
                     textBetween = markdown.substring(closeParen + 1, nextOpenBracket);
                 }
 
+                if (hadToShorten) {
+                    closeParen++;
+                }
+
                 currentIndex = closeParen + 1;
             } else {
                 currentIndex = markdown.length();
             }
 
-            if ((imageMarker == -1 || imageMarker > openBracket) && openBracket != -1) {
+            if (openParen == -1) {
+                currentIndex = markdown.length();
+            }
+            else if ((imageMarker == -1 || imageMarker > openBracket) && openBracket != -1) {
                 toReturn.add(markdown.substring(openParen + 1, closeParen));
             }
         }
