@@ -55,7 +55,7 @@ public class MarkdownParse {
                 currentIndex = markdown.length();
             }
 
-            if (openParen == -1) {
+            if (openParen == -1 || (markdown.charAt(openParen - 1) != ']')) {
                 currentIndex = markdown.length();
             }
             else if ((imageMarker == -1 || imageMarker > openBracket) && openBracket != -1) {
