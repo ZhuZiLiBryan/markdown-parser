@@ -185,6 +185,24 @@ public class MarkdownParseTest {
         }
     }
 
+    @Test
+    public void Week5Task2() {
+        String finalContents = null;
+
+        try {
+            finalContents = Files.readString(Path.of("test-file8.md"));
+        } catch(IOException e) {
+        }
+
+        ArrayList<String> links = MarkdownParse.getLinks(finalContents);
+
+        List<String> expected = List.of("bop"); //should be "a link on the first line"
+        for (int i = 0; i < expected.size(); i++) {
+            assertEquals(expected.get(i), links.get(i));
+        }
+    }
+
+
 
 
 }

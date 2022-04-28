@@ -27,11 +27,6 @@ public class MarkdownParse {
             int openParen = markdown.indexOf("(", closeBracket);
             int closeParen = markdown.indexOf(")", openParen);
 
-            System.out.println("openbrack " + openBracket);
-            System.out.println("closebrack " + closeBracket);
-            System.out.println("openparen " + openParen);
-            System.out.println("closeparen " + closeParen);
-
             //find the opening to next link
             int nextOpenBracket = markdown.indexOf("[", closeParen);
 
