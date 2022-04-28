@@ -1,5 +1,7 @@
 import static org.junit.Assert.*;
 import org.junit.*;
+
+import java.beans.Transient;
 import java.io.*;
 import java.util.List;
 import java.util.ArrayList;
@@ -202,7 +204,21 @@ public class MarkdownParseTest {
         }
     }
 
+    @Test
+    public void Week5Task3(){
+        String finalContents = null;
+        try {
+            finalContents = Files.readString(Path.of("Week5Task3.md"));
+        } catch(IOException e) {
+            System.out.println("uhoh");
+        }
+        ArrayList<String> links = MarkdownParse.getLinks(finalContents);
 
+        List<String> expected = List.of("link.com"); //should be "a link on the first line"
+        for (int i = 0; i < expected.size(); i++) {
+            assertEquals(expected.get(i), links.get(i));
+        }
+    }
 
 
 }
