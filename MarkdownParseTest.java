@@ -196,7 +196,7 @@ public class MarkdownParseTest {
 
         ArrayList<String> links = MarkdownParse.getLinks(finalContents);
 
-        List<String> expected = List.of("bop"); //should be "a link on the first line"
+        List<String> expected = List.of("a link on the first line"); //should be "a link on the first line"
         for (int i = 0; i < expected.size(); i++) {
             assertEquals(expected.get(i), links.get(i));
         }
