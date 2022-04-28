@@ -19,13 +19,13 @@ public class MarkdownParse {
             int openBracket = markdown.indexOf("[", currentIndex);
             int closeBracket = markdown.indexOf("]", openBracket);
 
-            if (closeBracket == -1) {
+            int openParen = markdown.indexOf("(", closeBracket);
+            int closeParen = markdown.indexOf(")", openParen);
+
+            if (closeBracket == -1 || openParen <= 0 || (markdown.charAt(openParen - 1) != ']')) {
                 currentIndex++;
                 continue;
             }
-
-            int openParen = markdown.indexOf("(", closeBracket);
-            int closeParen = markdown.indexOf(")", openParen);
 
             //find the opening to next link
             int nextOpenBracket = markdown.indexOf("[", closeParen);
@@ -56,7 +56,7 @@ public class MarkdownParse {
                 currentIndex = markdown.length();
             }
 
-            if (openParen == -1 || (markdown.charAt(openParen - 1) != ']')) {
+            if (openParen == -1) {
                 currentIndex = markdown.length();
             }
             else if ((imageMarker == -1 || imageMarker > openBracket) && openBracket != -1) {
