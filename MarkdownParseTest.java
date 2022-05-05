@@ -112,6 +112,7 @@ public class MarkdownParseTest {
         ArrayList<String> links = MarkdownParse.getLinks(finalContents);
 
         assertEquals(0, links.size());
+        System.out.println("YAYYCHANGE");
     }
 
     @Test
