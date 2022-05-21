@@ -221,5 +221,57 @@ public class MarkdownParseTest {
         }
     }
 
+    //ADDITIONS FOR LAB REPORT 4
+    @Test
+    public void testSnippetOne() {
+        String finalContents = null;
+
+        try {
+            finalContents = Files.readString(Path.of("test-snippet1.md"));
+        } catch(IOException e) {
+        }
+
+        ArrayList<String> links = MarkdownParse.getLinks(finalContents);
+
+        List<String> expected = List.of("`google.com", "google.com", "ucsd.edu");
+        for (int i = 0; i < expected.size(); i++) {
+            assertEquals(expected.get(i), links.get(i));
+        }
+    }
+
+    @Test
+    public void testSnippetTwo() {
+        String finalContents = null;
+
+        try {
+            finalContents = Files.readString(Path.of("test-snippet2.md"));
+        } catch(IOException e) {
+        }
+
+        ArrayList<String> links = MarkdownParse.getLinks(finalContents);
+
+        List<String> expected = List.of("a.com", "a.com(())", "example.com");
+        for (int i = 0; i < expected.size(); i++) {
+            assertEquals(expected.get(i), links.get(i));
+        } 
+    }
+
+    @Test
+    public void testSnippetThree() {
+        String finalContents = null;
+
+        try {
+            finalContents = Files.readString(Path.of("test-snippet3.md"));
+        } catch(IOException e) {
+        }
+
+        ArrayList<String> links = MarkdownParse.getLinks(finalContents);
+
+        List<String> expected = List.of("https://www.twitter.com", "https://sites.google.com/eng.ucsd.edu/cse-15l-spring-2022/schedule", "https://cse.ucsd.edu/");
+        for (int i = 0; i < expected.size(); i++) {
+            assertEquals(expected.get(i), links.get(i));
+        } 
+    }
+
 
 }
