@@ -16,8 +16,12 @@ public class MarkdownParse {
         while(currentIndex < markdown.length()) {
             int imageMarker = markdown.indexOf("!", currentIndex);
 
+            int openTick = markdown.indexOf("`", currentIndex);
+
             int openBracket = markdown.indexOf("[", currentIndex);
             int closeBracket = markdown.indexOf("]", openBracket);
+
+            int closeTick = markdown.indexOf("`", openTick + 1);
 
             int openParen = markdown.indexOf("(", closeBracket);
             int closeParen = markdown.indexOf(")", openParen);
@@ -26,6 +30,12 @@ public class MarkdownParse {
                 currentIndex++;
                 continue;
             }
+
+            if ((openBracket > openTick && openBracket < closeTick)) {
+                currentIndex = closeTick + 1;
+                continue;
+            }
+
 
             //find the opening to next link
             int nextOpenBracket = markdown.indexOf("[", closeParen);
@@ -38,7 +48,11 @@ public class MarkdownParse {
                 //and keeping track of where that last close parenthesis is
                 while (textBetween.indexOf(")") != -1) {
                     hadToShorten = true;
-                    closeParen = closeParen + textBetween.indexOf(")");
+                    if (textBetween.indexOf(")") == 0) {
+                        closeParen = closeParen + textBetween.indexOf(")") + 1;
+                    } else {
+                        closeParen = closeParen + textBetween.indexOf(")");
+                    }
                 
                     //last parentheses
                     if (closeParen + 1 >= textBetween.length()) {
@@ -59,8 +73,26 @@ public class MarkdownParse {
             if (openParen == -1) {
                 currentIndex = markdown.length();
             }
-            else if ((imageMarker == -1 || imageMarker > openBracket) && openBracket != -1) {
-                toReturn.add(markdown.substring(openParen + 1, closeParen));
+            else if (((imageMarker == -1 || imageMarker > openBracket) && openBracket != -1)) {
+                String returnString = markdown.substring(openParen + 1, closeParen);
+                returnString = returnString.trim();
+
+                int nestedOpenBracket = returnString.indexOf("[");
+                int nestedCloseBracket = returnString.indexOf("]");
+
+                if (nestedCloseBracket != -1 && returnString.charAt(nestedCloseBracket - 1) != '\\' &&
+                    returnString.indexOf(")") != -1) {
+                    returnString = returnString.substring(0, returnString.indexOf(")"));
+                }
+
+                if (nestedOpenBracket != -1 && returnString.charAt(nestedOpenBracket - 1) != '\\') {
+                    returnString = returnString.substring(nestedCloseBracket + 1);
+                    int nestedOpenParen = returnString.indexOf("(");
+                    returnString = returnString.substring(nestedOpenParen + 1);
+                }
+
+                    
+                toReturn.add(returnString);
             }
         }
 
